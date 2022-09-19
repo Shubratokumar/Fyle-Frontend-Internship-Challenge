@@ -27,7 +27,6 @@ const Home = () => {
 
     const [ user, setUser ] = useState({});
     const [ repos, setRepos ] = useState([]);
-    console.log(repos);
 
     useEffect(() => {
         (async () =>{
@@ -38,7 +37,7 @@ const Home = () => {
 
     useEffect(() => {
         (async () =>{
-            const { data } = await axios.get(`https://api.github.com/users/Shubratokumar/repos`);
+            const { data } = await axios.get(`https://api.github.com/users/Shubratokumar/repos?page=1&per_page=10`);
             setRepos(data);
         })()
     }, []);
