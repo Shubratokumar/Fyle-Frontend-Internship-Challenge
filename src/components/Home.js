@@ -4,6 +4,8 @@ import axios  from "axios";
 import UserDetailsComponent from './UserDetailsComponent';
 import RepoCardCompoment from './RepoCardCompoment';
 import PaginationComponent from './PaginationComponent';
+import Loader from './Loader';
+import { useQuery } from 'react-query';
 
 const Container = styled(Box)`
     padding: 30px 135px;    
@@ -33,17 +35,15 @@ const PaginationWarpper = styled(Box)`
 `;
 
 const Home = () => {
-
-    const [ user, setUser ] = useState({});
     const [ repos, setRepos ] = useState([]);
     const [ page, setPage ] = useState(1);
-    
-    useEffect(() => {
-        (async () =>{
-            const { data } = await axios.get(`https://api.github.com/users/Shubratokumar`);
-            setUser(data);
-        })()
-    }, []);
+    const {
+        data,
+        isLoading
+        } = useQuery("users", () =>
+        fetch(`https://api.github.com/users/Shubratokumar`).then((res) => res.json())
+        );
+        
 
     useEffect(() => {
         (async () =>{
@@ -51,14 +51,18 @@ const Home = () => {
             setRepos(data);
         })()
     }, [page]);
+     
+    if(isLoading){
+        return <Loader />
+    }
 
     
 
     return (
-        <Container>
+        <Container>  
             <ComponentWrapper>
                 <UserContainer>
-                    <UserDetailsComponent user={user} />
+                    <UserDetailsComponent user={data} />
                 </UserContainer>
                 <ReposContainer>
                     <RepoCardWrapper >
