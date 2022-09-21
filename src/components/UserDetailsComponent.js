@@ -20,7 +20,7 @@ const Img = styled('img')({
   });
 const CustomLink = styled(Link)`
     padding-left: 5px;
-`
+`;
 
 const UserDetailsComponent = ({user}) => {
     const { login, avatar_url, bio, html_url, location, twitter_username, blog } = user;

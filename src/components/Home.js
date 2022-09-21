@@ -3,11 +3,10 @@ import { Box, styled } from '@mui/material';
 import axios  from "axios";
 import UserDetailsComponent from './UserDetailsComponent';
 import RepoCardCompoment from './RepoCardCompoment';
-import "../styles/home.css";
+import PaginationComponent from './PaginationComponent';
 
 const Container = styled(Box)`
-    padding: 30px 135px;
-    
+    padding: 30px 135px;    
 `;
 const ComponentWrapper = styled(Box)`
     padding: 20px;
@@ -23,11 +22,21 @@ const ReposContainer = styled(Box)`
     margin: 10px;
     padding: 15px 20px;
 `;
+const RepoCardWrapper = styled(Box)`
+    margin: 0 auto;
+    display: grid;
+    grid-gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+`;
+const PaginationWarpper = styled(Box)`
+    margin-top: 15px;
+`;
 
 const Home = () => {
 
     const [ user, setUser ] = useState({});
     const [ repos, setRepos ] = useState([]);
+    const [ page, setPage ] = useState(1);
     
     useEffect(() => {
         (async () =>{
@@ -38,10 +47,10 @@ const Home = () => {
 
     useEffect(() => {
         (async () =>{
-            const { data } = await axios.get(`https://api.github.com/users/Shubratokumar/repos?page=1&per_page=10`);
+            const { data } = await axios.get(`https://api.github.com/users/Shubratokumar/repos?page=${page}&per_page=10`);
             setRepos(data);
         })()
-    }, []);
+    }, [page]);
 
     
 
@@ -52,14 +61,16 @@ const Home = () => {
                     <UserDetailsComponent user={user} />
                 </UserContainer>
                 <ReposContainer>
-                    <section className="repoWrapper" >
+                    <RepoCardWrapper >
                         {
                             repos?.map((repo) => (
                                 <RepoCardCompoment repo={repo} key={repo?.id}/>
                             ))
                         }
-                    </section>
-
+                    </RepoCardWrapper>
+                    <PaginationWarpper>
+                        <PaginationComponent totalPages={10} setPage={setPage}  />
+                    </PaginationWarpper>
                 </ReposContainer>
             </ComponentWrapper>
         </Container>

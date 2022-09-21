@@ -16,7 +16,6 @@ const ProgrammingLanguages = styled(Typography)`
 `;
 const RepoCardCompoment = ({repo}) => {
     const { name, language, description, html_url } = repo;
-    console.log(repo);
     return (
         <>
             <List sx={{ 
